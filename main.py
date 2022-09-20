@@ -29,9 +29,8 @@ def page_by_title(title):
 def page_by_year(year1, year2):
     result = []
     for item in get_data_by_sql(sql=f'''select * from netflix
-                    where release_year >= {year1}
-                    AND release_year <= {year2}
-                    limit 100
+                    where release_year BETWEEN {year1} AND {year2}
+                    LIMIT 100
                     '''):
         result.append(dict(item))
 
@@ -69,6 +68,8 @@ def page_by_genre(genre):
                     SELECT show_id, type
                     FROM netflix
                     WHERE listed_in like '%{str(genre).title()}%'
+                    ORDER BY release_year DESC
+                    LIMIT 10
                     '''):
         result.append(dict(item))
 
